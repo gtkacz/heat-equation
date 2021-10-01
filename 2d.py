@@ -47,6 +47,7 @@ def main():
         for i in range(1, linhas-1):
             for j in range(1, colunas-1):
                 T[l, i, j] = T[l-1, i, j] + λ*(T[l-1, i+1, j] + T[l-1, i-1, j] + T[l-1, i, j+1] + T[l-1, i, j-1] + -4*T[l-1, i, j])
+        
         Er[l, i, j] = abs((T[l, i, j] - T[l - 1, i, j])/T[l, i, j])
     
     print(Er)
