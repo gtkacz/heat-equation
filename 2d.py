@@ -20,8 +20,9 @@ def main():
     n = int(t_f/Δt)
     λ = 25
     
-    # Initialize solution: the grid of l(k, i, j)
-    l = np.empty((n, linhas, colunas))
+    # Initialize solution: the grid of T(l, i, j)
+    T = np.empty((n, linhas, colunas))
+    Er = np.empty((n, linhas, colunas))
 
     # Initial condition everywhere inside the grid
     u_initial = 0
@@ -33,20 +34,23 @@ def main():
     u_right = 50.0
 
     # Set the initial condition
-    l.fill(u_initial)
+    T.fill(u_initial)
+    Er.fill(0)
 
     # Set the boundary conditions
-    l[:, (linhas-1):, :] = u_top
-    l[:, :, :1] = u_left
-    l[:, :1, 1:] = u_bottom
-    l[:, :, (colunas-1):] = u_right
+    T[:, (linhas-1):, :] = u_top
+    T[:, :, :1] = u_left
+    T[:, :1, 1:] = u_bottom
+    T[:, :, (colunas-1):] = u_right
     
-    for k in range(1, n):
+    for l in range(1, n):
         for i in range(1, linhas-1):
             for j in range(1, colunas-1):
-                l[k, i, j] = l[k-1, i, j] + λ*(l[k-1, i+1, j] + l[k-1, i-1, j] + l[k-1, i, j+1] + l[k-1, i, j-1] + -4*l[k-1, i, j])
+                T[l, i, j] = T[l-1, i, j] + λ*(T[l-1, i+1, j] + T[l-1, i-1, j] + T[l-1, i, j+1] + T[l-1, i, j-1] + -4*T[l-1, i, j])
+        Er[l, i, j] = abs((T[l, i, j] - T[l - 1, i, j])/T[l, i, j])
     
-    sns.heatmap(l[-1])
+    print(Er)
+    sns.heatmap(T[-1])
     plt.show()
 
 if __name__ == '__main__':
