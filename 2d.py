@@ -18,7 +18,7 @@ def main():
     
     linhas = colunas = len(x)
     n = int(t_f/Δt)
-    F0 = 25
+    λ = 25
     
     # Initialize solution: the grid of l(k, i, j)
     l = np.empty((n, linhas, colunas))
@@ -44,7 +44,7 @@ def main():
     for k in range(1, n):
         for i in range(1, linhas-1):
             for j in range(1, colunas-1):
-                l[k, i, j] = l[k-1, i, j] + F0*(l[k-1, i+1, j] + l[k-1, i-1, j] + l[k-1, i, j+1] + l[k-1, i, j-1] + -4*l[k-1, i, j])
+                l[k, i, j] = l[k-1, i, j] + λ*(l[k-1, i+1, j] + l[k-1, i-1, j] + l[k-1, i, j+1] + l[k-1, i, j-1] + -4*l[k-1, i, j])
     
     sns.heatmap(l[-1])
     plt.show()
